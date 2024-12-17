@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cinzel', serif; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        
+        @keyframes floatBackground {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 50% 50%;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        @keyframes moveBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('komal5.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: moveBackground 30s linear infinite, floatBackground 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 20%;
+            animation: fadeIn 2s;
+            position: relative;
+            color: white;
+            z-index: 1;
+        }
+
+        .name {
+            font-size: 3em;
+            animation: slideIn 1s;
+            margin-bottom: 0;
+        }
+
+        .description {
+            font-size: 1.5em;
+            margin: 20px 0;
+            animation: fadeIn 2s;
+            margin-bottom: 40px;
+        }
+
+        .photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-image: url('your-photo-url.jpg'); 
+            background-size: cover;
+            background-position: center;
+            animation: zoomIn 2s;
+            margin-bottom: 20px;
+        }
+
+        .nav {
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
+            display: flex; 
+            justify-content: flex-end; 
+        }
+
+        .nav span {
+            margin-left: 20px; 
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .section {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10; 
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .skill, .project {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .skill img, .project img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .contact {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .social-icons {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+        }
+
+        .social-icons img {
+            width: 25px;
+            height: 25px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div> 
+    
+    <div class="header">
+        <div class="name">KOMAL TEJ</div>
+        <div class="description">A Lazy Web Developer</div>
+        <div class="photo"></div>
+        <div class="nav">
+            <span onclick="showSection('about')">About Me</span>
+            <span onclick="showSection('skills')">Skills</span>
+            <span onclick="showSection('projects')">Projects</span>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            const sections = document.querySelectorAll('.section');
+            const header = document.querySelector('.header');
+            
+            sections.forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            
+            header.classList.add('hide-header');
+            setTimeout(() => {
+                
+                document.getElementById(section).style.display = 'block';
+                
+                
+                header.classList.remove('hide-header');
+            }, 500); 
+        }
+    
+        function closeSection() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => {
+                s.style.display = 'none';
+            });
+    
+            const header = document.querySelector('.header');
+            header.classList.add('hide-header');
+
+            
+            setTimeout(() => {
+                header.classList.remove('hide-header');
+                
+                const name = document.querySelector('.name');
+                const description = document.querySelector('.description');
+                name.classList.remove('slideIn');
+                description.classList.remove('fadeIn');
+                
+                
+                void name.offsetWidth; 
+                void description.offsetWidth; 
+                
+                name.classList.add('slideIn');
+                description.classList.add('fadeIn');
+            }, 500); 
+        }
+    </script>
+    
+
+    <div class="section" id="about">
+        <h2>About Me</h2>
+        <p>Hi, I'm Komal Tej, a passionate web developer and a lifelong learner. I specialize in building interactive, user-friendly websites and web applications. My journey into web development started with a curiosity for how the web works and a desire to create meaningful digital experiences.
+
+            I have hands-on experience with technologies like HTML, CSS, JavaScript, Java, and Python, as well as frameworks such as React. When I'm not coding, you can find me dabbling in graphic design, creating engaging visuals, or editing videos for creative projects.
+            
+            I'm always looking for new challenges to enhance my skills and contribute to the development community. Whether it's developing an innovative app or designing an intuitive UI, I am driven by the opportunity to solve problems and bring ideas to life.
+            
+            Feel free to browse through my skills and projects, and don't hesitate to contact me if you're interested in collaborating!</p>
+        <button onclick="closeSection()">Close</button>
+    </div>
+
+    <div class="section" id="skills">
+        <h2>My Skills</h2>
+        <div class="skill">
+            <img src="web-dev.png" alt="Web Development">
+            <span>Web Development</span>
+        </div>
+        <div class="skill">
+            <img src="c-icopngn." alt="C">
+            <span>C Programming</span>
+        </div>
+        <div class="skill">
+            <img src="java.png" alt="Java">
+            <span>Java</span>
+        </div>
+        <div class="skill">
+            <img src="python.png" alt="Python">
+            <span>Python</span>
+        </div>
+        <div class="skill">
+            <img src="data visualization.png" alt="Data Visualization">
+            <span>Data Visualization</span>
+        </div>
+        <div class="skill">
+            <img src="autocad.png" alt="Auto Cad">
+            <span>Auto Cad</span>
+        </div>
+        <div class="skill">
+            <img src="graphic design.jpeg" alt="Graphic Design">
+            <span>Graphic Design</span>
+        </div>
+        <div class="skill">
+            <img src="video editing.png" alt="Video Editing">
+            <span>Video Editing</span>
+        </div>
+        <button onclick="closeSection()">Close</button>
+    </div>
+
+    <div class="section" id="projects">
+        <h2>My Projects</h2>
+        <div class="project">
+            <img src="bank-project.png" alt="Bank Management">
+            <div>
+                <strong>Bank Management using DBMS</strong>
+                <p>A project to manage bank accounts and transactions.</p>
+            </div>
+        </div>
+        <div class="project">
+            <img src="bit coin.jpg" alt="Bitcoin Notifier">
+            <div>
+                <strong>Bitcoin Notifier using Python</strong>
+                <p>A tool to notify users about Bitcoin price changes.</p>
+            </div>
+        </div>
+        <div class="project">
+            <img src="mobile tracking.png" alt="Mobile Tracking">
+            <div>
+                <strong>Mobile Tracking using Java</strong>
+                <p>A project to track mobile devices.</p>
+            </div>
+        </div>
+        <div class="project">
+            <img src="pharmacy.png" alt="Pharmacy Management">
+            <div>
+                <strong>Pharmacy Management using Java</strong>
+                <p>A system to manage pharmacy operations.</p>
+            </div>
+        </div>
+        <button onclick="closeSection()">Close</button>
+    </div>
+
+    <div class="contact">
+        <h2>Contact Me</h2>
+        <p>Email: your-email@gmail.com</p>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://www.instagram.com/komalrubyjane/" target="_blank" rel="noopener noreferrer">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 25px; height: 25px;">
+        </a>
+        <a href="https://www.linkedin.com/in/your_username/" target="_blank" rel="noopener noreferrer">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg" alt="LinkedIn" style="width: 25px; height: 25px;">
+        </a>
+    </div>
+
+</body>
+</html>
