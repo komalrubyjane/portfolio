@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MALAPARAJU KOMAL TEJ — Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --yellow: #FFD600;
+            --black: #0a0a0a;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        
+        /* Film grain overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Yellow accent color */
+        .text-yellow {
+            color: var(--yellow);
+        }
+        
+        .bg-yellow {
+            background-color: var(--yellow);
+        }
+        
+        .border-yellow {
+            border-color: var(--yellow);
+        }
+        
+        /* Hero text stroke effect */
+        .stroke-text {
+            -webkit-text-stroke: 2px var(--white);
+            color: transparent;
+        }
+        
+        .stroke-yellow {
+            -webkit-text-stroke: 2px var(--yellow);
+            color: transparent;
+        }
+        
+        /* Marquee animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--yellow);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 #ff00ff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 85px, 0); }
+            20% { clip: rect(63px, 9999px, 130px, 0); }
+            40% { clip: rect(25px, 9999px, 5px, 0); }
+            60% { clip: rect(76px, 9999px, 100px, 0); }
+            80% { clip: rect(15px, 9999px, 170px, 0); }
+            100% { clip: rect(50px, 9999px, 90px, 0); }
+        }
+        
+        /* Custom cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--yellow);
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--yellow);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        .cursor-outline.hover {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 214, 0, 0.1);
+        }
+        
+        /* Image treatment */
+        .person-image {
+            filter: contrast(1.1) saturate(1.2);
+            mix-blend-mode: normal;
+        }
+        
+        /* Diagonal clip */
+        .diagonal-clip {
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+        }
+        
+        /* Text reveal */
+        .reveal-text {
+            overflow: hidden;
+        }
+        
+        .reveal-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+        
+        /* Hover line effect */
+        .hover-line {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hover-line::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--yellow);
+            transition: width 0.3s ease;
+        }
+        
+        .hover-line:hover::after {
+            width: 100%;
+        }
+        
+        /* Project card */
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .project-card:hover {
+            transform: translateX(10px);
+        }
+        
+        .project-card:hover .project-number {
+            color: var(--yellow);
+        }
+        
+        /* Magnetic button */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--yellow);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-white">
+
+    <div class="grain"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 mix-blend-difference">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-display font-bold tracking-tighter hover-target glitch" data-text="komalrubyjane.">komalrubyjane.</a>
+            <div class="hidden md:flex gap-8 text-sm font-medium tracking-widest">
+                <a href="#work" class="hover-line hover-target">WORK</a>
+                <a href="#about" class="hover-line hover-target">ABOUT</a>
+                <a href="#contact" class="hover-line hover-target">CONTACT</a>
+            </div>
+            <button class="md:hidden hover-target" onclick="toggleMenu()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-[#0a0a0a] z-40 transform translate-x-full transition-transform duration-500 md:hidden flex flex-col items-center justify-center gap-8">
+        <a href="#work" class="text-5xl font-display" onclick="toggleMenu()">WORK</a>
+        <a href="#about" class="text-5xl font-display" onclick="toggleMenu()">ABOUT</a>
+        <a href="#contact" class="text-5xl font-display" onclick="toggleMenu()">CONTACT</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]">
+        <!-- Yellow diagonal background -->
+        <div class="absolute right-0 top-0 w-1/2 h-full bg-[#FFD600] diagonal-clip hidden md:block"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-8 items-center pt-20">
+            <!-- Left Content -->
+            <div class="space-y-6 order-2 md:order-1">
+                <div class="space-y-2">
+                    <p class="text-[#FFD600] font-medium tracking-[0.4em] text-xs uppercase mb-4 reveal-text">
+                        <span>Creative Developer</span>
+                    </p>
+                    <h1 class="text-7xl md:text-9xl font-display font-bold leading-[0.85] tracking-tight reveal-text">
+                        <span class="block">KOMAL</span>
+                        <span class="block text-[#0a0a0a] md:text-[#0a0a0a]" style="-webkit-text-stroke: 2px white; color: transparent;">TEJ</span>
+                    </h1>
+                </div>
+                
+                <div class="max-w-md space-y-6 pt-4">
+                    <div class="h-1 w-24 bg-[#FFD600]"></div>
+                    <p class="text-gray-400 text-lg leading-relaxed reveal-text opacity-0" id="hero-desc">
+                        Crafting bold digital experiences that merge art with functionality. Specialized in creative coding and immersive web design.
+                    </p>
+                    <div class="flex gap-4 reveal-text opacity-0" id="hero-cta">
+                        <a href="#work" class="magnetic-btn px-8 py-4 bg-[#FFD600] text-black font-bold rounded-none hover:bg-white transition-colors hover-target uppercase tracking-wider text-sm">
+                            View Work
+                        </a>
+                        <a href="#contact" class="magnetic-btn px-8 py-4 border-2 border-white text-white font-bold rounded-none hover:bg-white hover:text-black transition-colors hover-target uppercase tracking-wider text-sm">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex gap-6 pt-8 reveal-text opacity-0" id="social-links">
+                    <a href="https://github.com/komalrubyjane" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/komal-tej-53b8a231a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/komalrubyjane?igsh=MWt0aTJ0d3I2bTIzOQ==" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Image - Person PNG -->
+            <div class="relative order-1 md:order-2 flex justify-center md:justify-end">
+                <div class="relative w-full max-w-lg">
+                    <!-- Background shape -->
+                    <div class="absolute inset-0 bg-[#FFD600] rounded-full blur-3xl opacity-20 transform scale-110"></div>
+                    
+                    <!-- Person Image with transparent background -->
+                    <img src="hehe.jpeg"
+                         class="person-image relative z-10 w-full h-auto object-contain drop-shadow-2xl hover-target transform hover:scale-105 transition-transform duration-500"
+                         style="filter: drop-shadow(0 25px 50px rgba(0,0,0,0.5));">
+                    
+                    <!-- Floating elements -->
+                    <div class="absolute -bottom-4 -left-4 bg-[#FFD600] text-black px-6 py-3 font-bold text-sm rounded-none transform -rotate-3 hover-target">
+                        AVAILABLE FOR WORK
+                    </div>
+                    
+                    <div class="absolute top-10 -right-4 border-2 border-[#FFD600] px-4 py-2 rounded-none transform rotate-12 hover-target">
+                        <span class="text-[#FFD600] font-bold text-xs tracking-widest">2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+            <span class="text-xs uppercase tracking-widest text-[#FFD600]">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-[#FFD600] to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Marquee Section -->
+    <section class="py-6 bg-[#FFD600] text-black overflow-hidden border-y-4 border-black">
+        <div class="marquee-container">
+            <div class="marquee-content font-display text-4xl md:text-6xl font-bold tracking-tight">
+                CREATIVE DEVELOPER • UI/UX DESIGNER • ART DIRECTOR • CREATIVE DEVELOPER • UI/UX DESIGNER • ART DIRECTOR • CREATIVE DEVELOPER • UI/UX DESIGNER • ART DIRECTOR •
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Work Section -->
+    <section id="work" class="py-32 px-6 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+                <div>
+                    <p class="text-[#FFD600] font-medium tracking-[0.4em] text-xs uppercase mb-4">Portfolio</p>
+                    <h2 class="text-6xl md:text-8xl font-display font-bold">SELECTED<br><span class="text-gray-600">WORKS</span></h2>
+                </div>
+                <p class="text-gray-500 max-w-sm">A curated selection of projects showcasing creative development and design excellence.</p>
+            </div>
+
+            <!-- Projects List -->
+            <div class="space-y-12">
+                <!-- Project 1 -->
+                <div class="project-card group cursor-pointer border-t border-gray-800 pt-8" onclick="openProject('nebula')">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-1">
+                            <span class="project-number font-display text-4xl text-gray-700 font-bold transition-colors">01</span>
+                        </div>
+                        <div class="md:col-span-5">
+                            <h3 class="text-3xl md:text-5xl font-display font-bold group-hover:text-[#FFD600] transition-colors">RUNWARS</h3>
+                        </div>
+                        <div class="md:col-span-4">
+                            <p class="text-gray-500">a competitive running game</p>
+                        </div>
+                        <div class="md:col-span-2 text-right">
+                            <span class="text-[#FFD600] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card group cursor-pointer border-t border-gray-800 pt-8" onclick="openProject('quantum')">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-1">
+                            <span class="project-number font-display text-4xl text-gray-700 font-bold transition-colors">02</span>
+                        </div>
+                        <div class="md:col-span-5">
+                            <h3 class="text-3xl md:text-5xl font-display font-bold group-hover:text-[#FFD600] transition-colors">ORTHOQUICK</h3>
+                        </div>
+                        <div class="md:col-span-4">
+                            <p class="text-gray-500">A ML model used to detect the fracture in orthodontic X-rays</p>
+                        </div>
+                        <div class="md:col-span-2 text-right">
+                            <span class="text-[#FFD600] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card group cursor-pointer border-t border-gray-800 pt-8" onclick="openProject('aurora')">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-1">
+                            <span class="project-number font-display text-4xl text-gray-700 font-bold transition-colors">03</span>
+                        </div>
+                        <div class="md:col-span-5">
+                            <h3 class="text-3xl md:text-5xl font-display font-bold group-hover:text-[#FFD600] transition-colors">LEGAL LEARN</h3>
+                        </div>
+                        <div class="md:col-span-4">
+                            <p class="text-gray-500">A system used to help legal professionals analyze case law and legal documents more efficiently</p>
+                        </div>
+                        <div class="md:col-span-2 text-right">
+                            <span class="text-[#FFD600] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card group cursor-pointer border-t border-b border-gray-800 py-8" onclick="openProject('crypto')">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-1">
+                            <span class="project-number font-display text-4xl text-gray-700 font-bold transition-colors">04</span>
+                        </div>
+                        <div class="md:col-span-5">
+                            <h3 class="text-3xl md:text-5xl font-display font-bold group-hover:text-[#FFD600] transition-colors">THOUGHT TO ART</h3>
+                        </div>
+                        <div class="md:col-span-4">
+                            <p class="text-gray-500">An AI-powered platform that converts written thoughts into visual art</p>
+                        </div>
+                        <div class="md:col-span-2 text-right">
+                            <span class="text-[#FFD600] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 bg-[#FFD600] text-black relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <p class="text-black/60 font-medium tracking-[0.4em] text-xs uppercase">About Me</p>
+                    <h2 class="text-6xl md:text-8xl font-display font-bold leading-[0.9]">
+                        DESIGNING<br>
+                        <span class="text-white" style="-webkit-text-stroke: 2px black; color: transparent;">DIGITAL</span><br>
+                        EXPERIENCES
+                    </h2>
+                    <div class="space-y-6 text-black/80 text-lg leading-relaxed max-w-md">
+                        <p>With experience in creative development, I bridge the gap between design and technology.</p>
+                        <p>My work focuses on creating immersive web experiences that leave lasting impressions through bold visuals and seamless interactions.</p>
+                    </div>
+                    <div class="flex gap-8 pt-4">
+                        <div>
+                            <p class="text-5xl font-display font-bold">15+</p>
+                            <p class="text-sm uppercase tracking-wider mt-2">Projects</p>
+                        </div>
+                        <div>
+                            <p class="text-5xl font-display font-bold">10+</p>
+                            <p class="text-sm uppercase tracking-wider mt-2">Hackathons</p>
+                        </div>
+                        <div>
+                            <p class="text-5xl font-display font-bold">0</p>
+                            <p class="text-sm uppercase tracking-wider mt-2">EXPERIENCE</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="aspect-[4/5] bg-black rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=1000&fit=crop" 
+                             alt="Workspace" 
+                             class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity hover-target">
+                    </div>
+                    <!-- Decorative frame -->
+                    <div class="absolute -top-4 -right-4 w-full h-full border-4 border-black rounded-lg -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="py-32 px-6 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Column 1 -->
+                <div class="space-y-8">
+                    <h3 class="text-[#FFD600] font-display text-3xl font-bold mb-8">DEVELOPMENT</h3>
+                    <div class="space-y-6">
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">React / Next.js</span>
+                                <span class="text-[#FFD600]">95%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">TypeScript</span>
+                                <span class="text-[#FFD600]">90%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Three.js / WebGL</span>
+                                <span class="text-[#FFD600]">85%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="space-y-8">
+                    <h3 class="text-[#FFD600] font-display text-3xl font-bold mb-8">DESIGN</h3>
+                    <div class="space-y-6">
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">UI/UX Design</span>
+                                <span class="text-[#FFD600]">92%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="92%"></div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Motion Design</span>
+                                <span class="text-[#FFD600]">88%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="88%"></div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Brand Identity</span>
+                                <span class="text-[#FFD600]">80%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#FFD600] w-0 transition-all duration-1000 skill-bar" data-width="80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="space-y-8">
+                    <h3 class="text-[#FFD600] font-display text-3xl font-bold mb-8">TOOLS</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">Figma</span>
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">Blender</span>
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">After Effects</span>
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">VS Code</span>
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">Git</span>
+                        <span class="px-4 py-2 border border-gray-700 rounded-full text-sm hover:bg-[#FFD600] hover:text-black hover:border-[#FFD600] transition-all cursor-default">Vercel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-6 bg-[#0a0a0a] relative overflow-hidden">
+        <div class="absolute inset-0 bg-[#FFD600] opacity-5 transform -skew-y-6"></div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <p class="text-[#FFD600] font-medium tracking-[0.4em] text-xs uppercase mb-6">Get in Touch</p>
+            <h2 class="text-7xl md:text-9xl font-display font-bold mb-8">LET'S WORK<br><span class="text-gray-700">TOGETHER</span></h2>
+            <p class="text-gray-500 text-xl mb-12 max-w-2xl mx-auto">Have a project in mind? Let's create something extraordinary together.</p>
+            
+            <a href="mailto:malaparajukomaltej280@gmail.com" class="magnetic-btn inline-flex items-center gap-4 px-12 py-6 bg-[#FFD600] text-black text-xl font-bold rounded-none hover:bg-white transition-all hover:scale-105 hover-target uppercase tracking-wider">
+                <span>Start a Project</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+
+            <div class="flex justify-center gap-12 mt-20">
+                <a href="https://www.instagram.com/komalrubyjane?igsh=MWt0aTJ0d3I2bTIzOQ==" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors uppercase tracking-widest text-sm">instagram</a>
+                <a href="https://www.linkedin.com/in/komal-tej-53b8a231a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors uppercase tracking-widest text-sm">LinkedIn</a>
+                <a href="https://github.com/komalrubyjane" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors uppercase tracking-widest text-sm">GitHub</a>
+                <a href="https://youtube.com/@zorojuro198?si=-iBgBssaexDQwAHC" class="hover-target text-gray-500 hover:text-[#FFD600] transition-colors uppercase tracking-widest text-sm">Youtube</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12 px-6 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-4xl font-display font-bold text-[#FFD600]">KOMALRUBYJANE</p>
+            <p class="text-gray-600 text-sm">© 2026 komalrubyjane. All rights reserved.</p>
+            <p class="text-gray-700 text-sm uppercase tracking-widest">Designed & Built</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorOutline.style.left = e.clientX + 'px';
+                cursorOutline.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
+            target.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin();
+
+        // Text reveal animation
+        const revealTexts = document.querySelectorAll('.reveal-text span');
+        gsap.to(revealTexts, {
+            y: '0%',
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power4.out',
+            delay: 0.3
+        });
+
+        // Hero content fade in
+        gsap.to('#hero-desc', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.8,
+            ease: 'power3.out'
+        });
+
+        gsap.to('#hero-cta', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 1,
+            ease: 'power3.out'
+        });
+
+        gsap.to('#social-links', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 1.2,
+            ease: 'power3.out'
+        });
+
+        // Skill bars animation
+        const skillBars = document.querySelectorAll('.skill-bar');
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width;
+                }
+            });
+        }, observerOptions);
+
+        skillBars.forEach(bar => observer.observe(bar));
+
+        // Magnetic buttons
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        // Project click handler
+        function openProject(project) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-8 right-8 bg-[#FFD600] text-black px-8 py-6 font-bold z-50 transform translate-y-32 transition-transform duration-500 flex items-center gap-4';
+            notification.innerHTML = `
+                <span>OPENING ${project.toUpperCase()}...</span>
+                <span class="text-2xl">→</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateY(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateY(32px)';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
